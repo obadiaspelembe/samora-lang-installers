@@ -4,7 +4,7 @@ This repository provides scripts to install Samora Lang compiler in various Oper
 ## How to install
 
 ### Windows
-Download the [Windows Installer](https://github.com/obadiaspelembe/samora-lang-installers).
+Download the [Windows Installer](https://github.com/obadiaspelembe/samora-lang-installers/blob/feat/windows-installer/Windows/installer.ps1).
 
 I really recommend installing golang in your host, although it is not mandatory.
 
