@@ -1,6 +1,6 @@
+# Set variables for download URLs and installation paths
 $goInProgramFiles = "C:\Program Files\Go\bin"
 $samoraGithubRepo = "https://github.com/GraHms/Samora-Lang"
-# Set variables for download URLs and installation paths
 $goDownloadUrl = "https://golang.org/dl/go1.17.windows-amd64.msi"
 $goInstallerPath = "$env:TEMP\go_installer.msi"
 $goInstallPath = "C:\Go" 
@@ -17,7 +17,7 @@ if (!(Test-Path "$goInProgramFiles\go.exe")) {
     if (!(Test-Path "go.exe")) {
         # Downloading Golang installer
 
-        Write-Host "Go installed successfully."
+        Write-Host "Downloading GO installer"
         # Download the Go installer
         Invoke-WebRequest -Uri $goDownloadUrl -OutFile $goInstallerPath
     
