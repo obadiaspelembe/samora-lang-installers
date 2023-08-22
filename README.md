@@ -1,10 +1,12 @@
-# samora-lang-installers
+# Samora lang Installers
 This repository provides scripts to install Samora Lang compiler in various Operating Systems
 
 ## How to install
 
 ### Windows
 Download the [Windows Installer](https://github.com/obadiaspelembe/samora-lang-installers).
+
+I really recommend installing golang in your host, although it is not mandatory.
 
 ```powershell
 ./installer.ps1
