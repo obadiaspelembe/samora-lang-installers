@@ -31,8 +31,11 @@ echo "Installing samora-lang"
 
 sudo cp samora /usr/bin/samora
 
-
-echo "nstallation Completed."
+if command_exists samora; then
+ echo "Installation Completed."
+else
+ echo "Something went wrong during the installation."
+fi
 
 rm -rf "$temp_dir"
 
