@@ -29,7 +29,7 @@ go build -o "samora" main.go
 
 echo "Installing samora-lang"
 
-cp samora /usr/bin/samora
+sudo cp samora /usr/bin/samora
 
 
 echo "nstallation Completed."
