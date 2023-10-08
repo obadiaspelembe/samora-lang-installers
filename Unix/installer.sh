@@ -19,15 +19,13 @@ export PATH="$PATH:$GOPATH/bin"
 
 temp_dir=$(mktemp -d)
 echo "Temporary directory: $temp_dir"
-echo "cloning the Samora-Lang repository ..."
 
 git clone https://github.com/GraHms/Samora-Lang "$temp_dir"
 cd "$temp_dir"
 
-echo "Building..."
+echo "Installing samora-lang..."
 go build -o "samora" main.go
 
-echo "Installing samora-lang"
 
 sudo cp samora /usr/bin/samora
 
