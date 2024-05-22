@@ -6,13 +6,13 @@ command_exists() {
 
 # Check if curl is installed
 if ! command_exists curl; then
-  echo "install 'curl' to proceed"
+  echo "install curl to proceed"
   echo "exiting..."
   exit
 fi
 
 if ! command_exists jq; then
-  echo "install 'jq' at: https://jqlang.github.io/jq/download/ to proceed"
+  echo "install jq at: https://jqlang.github.io/jq/download/ to proceed"
   echo "exiting..."
   exit
 fi
