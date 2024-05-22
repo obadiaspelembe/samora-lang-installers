@@ -6,13 +6,19 @@ command_exists() {
 
 # Check if curl is installed
 if ! command_exists curl; then
-  echo "install curl to proceed"
+  echo "install 'curl' to proceed"
   echo "exiting..."
   exit
 fi
 
-if ! command_exists samora; then
-  sudo mv $(which samora)
+if ! command_exists jq; then
+  echo "install 'jq' at: https://jqlang.github.io/jq/download/ to proceed"
+  echo "exiting..."
+  exit
+fi
+
+if command_exists samora; then
+  sudo rm $(which samora)
 fi
 
 temp_dir=$(mktemp -d)
@@ -34,7 +40,7 @@ tar -xzf ./${LATEST_VERSION_FILE_NAME}
 
 sudo cp samora-lang /usr/local/bin/samora
 
-chmod +x /usr/local/bin/samora
+sudo chmod +x /usr/local/bin/samora
 
 if command_exists samora; then
   echo "Delete temporary directory..."
