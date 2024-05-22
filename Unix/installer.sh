@@ -21,6 +21,15 @@ if command_exists samora; then
   sudo rm $(which samora)
 fi
 
+NAME=$(uname -s)
+
+if [ "$NAME" = "Darwin" ]; then
+  PLATFORM='darwin'
+else
+  PLATFORM='linux'
+fi
+
+
 temp_dir=$(mktemp -d)
 echo "Temporary directory: $temp_dir"
 
@@ -28,7 +37,7 @@ LATEST_SML_RELEASE=$(curl -s https://api.github.com/repos/GraHms/Samora-Lang/rel
 
 LATEST_SML_VERSION=$(echo $LATEST_SML_RELEASE | jq -r '.tag' | sed 's/^v//')
 
-LATEST_VERSION_FILE_NAME=$(echo "samora-lang_${LATEST_SML_VERSION}_linux_amd64.tar.gz")
+LATEST_VERSION_FILE_NAME=$(echo "samora-lang_${LATEST_SML_VERSION}_${PLATFORM}_amd64.tar.gz")
 
 LATEST_SML_FILE_URL=$(echo $LATEST_SML_RELEASE | jq -r '.assets[] .browser_download_url' | grep $LATEST_VERSION_FILE_NAME)
 
