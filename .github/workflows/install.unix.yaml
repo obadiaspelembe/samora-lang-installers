@@ -1,0 +1,25 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Unix-Installer
+
+on:
+  push:
+  pull_request:
+    types:
+      - opened
+      - edited
+
+jobs:
+  installation_test:
+    name: samora-lang installation test.
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - run: sudo sh ./Unix/installer.sh
+      - run: samora --help
