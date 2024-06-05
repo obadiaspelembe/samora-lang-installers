@@ -1,58 +1,55 @@
-# Set variables for download URLs and installation paths
-$goInProgramFiles = "C:\Program Files\Go\bin"
-$samoraGithubRepo = "https://github.com/GraHms/Samora-Lang"
-$goDownloadUrl = "https://golang.org/dl/go1.17.windows-amd64.msi"
-$goInstallerPath = "$env:TEMP\go_installer.msi"
-$goInstallPath = "C:\Go" 
-$clonePath = "$env:TEMP\Samora"
-$smlInstallerPath = "$env:USERPROFILE\Samora"
+$SML_ISNTALLER_PATH = "$env:USERPROFILE\Samora"
+$SML_TEMP_INSTALLER_PATH =  "$env:TEMP\Samora" 
 
-# Check if go is installed in ProgramFiles
-if (!(Test-Path "$goInProgramFiles\go.exe")) {
-    Write-Host "Golang executable found under $goInProgramFiles"
-} else {
+Write-Host "Retrieving Samora Lang release information ..."
 
-    Write-Host "Golang executable not found"
+$LATEST_SML_RELEASES = Invoke-WebRequest -Uri "https://api.github.com/repos/GraHms/Samora-Lang/releases/latest" | ConvertFrom-Json
+$LATEST_TAG = $LATEST_SML_RELEASES.tag_name
 
-    if (!(Test-Path "go.exe")) {
-        # Downloading Golang installer
+Write-Host "Samora Lang latest version: $LATEST_TAG"
 
-        Write-Host "Downloading GO installer"
-        # Download the Go installer
-        Invoke-WebRequest -Uri $goDownloadUrl -OutFile $goInstallerPath
-    
-        # Install Go
-        Start-Process -Wait -FilePath msiexec -ArgumentList "/i $goInstallerPath /qn ADDLOCAL=ALL"
-    
-        # Set Go environment variables
-        $GOPATH = "$env:USERPROFILE\go"
-        $PATH += ";$goInstallPath\bin;$GOPATH\bin"
+$SML_ASSETS = $LATEST_SML_RELEASES.assets
 
-        $existingPath = [Environment]::GetEnvironmentVariable("Path", "User")
-        [Environment]::SetEnvironmentVariable("Path", "$existingPath;$PATH", "User")
-    
-        Write-Host "Go installed successfully."
-    }  
+foreach ($ASSET in $SML_ASSETS) {
+    if ($ASSET.name.ToLower().Contains("WINDOWS".ToLower())) {
+        $ASSET_DOWNLOAD_LINK = $ASSET.browser_download_url
+        Write-Host "Windows installer: $ASSET_DOWNLOAD_LINK"
+        Invoke-WebRequest -Uri $ASSET_DOWNLOAD_LINK -OutFile $SML_TEMP_INSTALLER_PATH
+        break
+    }
 }
 
-# Clone the Samora Lang GitHub repository
-Write-Host "Cloning Samora Github Repository."
-git clone $samoraGithubRepo $clonePath
+if (Test-Path "$SML_ISNTALLER_PATH") {
+    Write-Host "Samora Lang executable found under $SML_ISNTALLER_PATH"
+    Write-Host "Removing Samoral Lang under $SML_ISNTALLER_PATH"
 
-Set-Location -Path $clonePath
+    Remove-Item -Path "$SML_ISNTALLER_PATH" -Recurse -Force
 
-Write-Host "Generating executable compiler."
-Invoke-Expression "go build"
+    Write-Host "Deletion complete $SML_ISNTALLER_PATH"
+}
 
-# Add Samora Executable Folder to USERPROFILE directory
-New-Item -Path "$smlInstallerPath" -ItemType Directory
+Start-Sleep -Seconds 5
 
-# Move samora lang to installer folder
-Move-Item -Path "$clonePath\samoralang.exe" -Destination "$smlInstallerPath/samora.exe" 
+New-Item -Path "$SML_ISNTALLER_PATH" -ItemType Directory
 
-$existingPath = [Environment]::GetEnvironmentVariable("Path", "User")
+Write-Host "Extracting sml compiler and initializing installation"
+tar -xzf $SML_TEMP_INSTALLER_PATH
 
-[Environment]::SetEnvironmentVariable("Path", "$existingPath;$smlInstallerPath", "User")
+Move-Item -Path "samora-lang.exe" -Destination "$SML_ISNTALLER_PATH/samora.exe" 
+Move-Item -Path "README.md" -Destination "$SML_ISNTALLER_PATH/README.md" 
 
-Set-Location -Path $smlInstallerPath
-Write-Host "Samoral Lang installed successfully."
+Start-Sleep -Seconds 5
+
+Write-Host "Setting environment variables for SML compiler"
+$HOST_ENV_VARS = [Environment]::GetEnvironmentVariable("Path", "User")
+
+[Environment]::SetEnvironmentVariable("Path", "$HOST_ENV_VARS;$SML_ISNTALLER_PATH", "User")
+
+Start-Sleep -Seconds 5
+
+Write-Host "Samora Lang installation completed successfully..."
+
+Write-Host "Compiler: $SML_ISNTALLER_PATH/samora.exe"
+Write-Host "Readme: $SML_ISNTALLER_PATH/README.md"
+
+Write-Host "Enjoy :) !!!"
