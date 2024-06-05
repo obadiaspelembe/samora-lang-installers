@@ -28,10 +28,7 @@ jobs:
     name: samora-lang win installation test. 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: check-win-installer 
-        shell: pwsh
-        run: ls  
+      - uses: actions/checkout@v3 
       - name: win-installer 
         shell: pwsh
         run: ./Windows/installer.ps1 
