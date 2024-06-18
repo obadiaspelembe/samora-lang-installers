@@ -6,7 +6,7 @@ This repository provides scripts to install Samora Lang compiler in various Oper
 
 ### Windows
 
-Download the powershell script [Windows Installer](https://github.com/obadiaspelembe/samora-lang-installers/blob/feat/windows-installer/Windows/installer.ps1).
+Download the powershell script [Windows Installer](https://raw.githubusercontent.com/obadiaspelembe/samora-lang-installers/main/Windows/installer.ps1).
 
 ```powershell
 ./installer.ps1
